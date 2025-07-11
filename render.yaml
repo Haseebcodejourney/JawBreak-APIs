@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: jawbreak-apis
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "cd APIs && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn APIs.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False
+      - key: DJANGO_SETTINGS_MODULE
+        value: APIs.settings_prod
+      - key: ALLOWED_HOSTS
+        value: "*"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: jawbreak-db
+          property: connectionString
+  
+  - type: pserv
+    name: jawbreak-db
+    env: postgresql
+    plan: free
+    databaseName: jawbreak_db
+    databaseUser: jawbreak_user

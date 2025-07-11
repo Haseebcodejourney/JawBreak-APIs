@@ -1,0 +1,39 @@
+{
+  "name": "JawBreak Healthcare APIs",
+  "description": "Django REST API for Healthcare Management System",
+  "repository": "https://github.com/Haseebcodejourney/JawBreak-APIs",
+  "keywords": ["django", "healthcare", "api", "rest", "postgresql"],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "eco"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:mini"
+    }
+  ],
+  "env": {
+    "SECRET_KEY": {
+      "generator": "secret"
+    },
+    "DEBUG": {
+      "value": "False"
+    },
+    "DJANGO_SETTINGS_MODULE": {
+      "value": "APIs.settings_prod"
+    },
+    "ALLOWED_HOSTS": {
+      "value": "*"
+    }
+  },
+  "scripts": {
+    "postdeploy": "cd APIs && python manage.py migrate && python manage.py collectstatic --noinput"
+  }
+}
