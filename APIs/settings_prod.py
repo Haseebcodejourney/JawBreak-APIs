@@ -25,12 +25,15 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'django_celery_beat',
+    'django_celery_results',
     'authentication',
     'patients',
     'visits',
     'file_management',
     'oasis',
     'communication',
+    'ai_insights',  # AI/ML services
     'api',  # your original app
 ]
 
@@ -170,3 +173,64 @@ if not DEBUG:
 
 # Static files storage
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# AI/ML Configuration
+OPENAI_API_KEY = config('OPENAI_API_KEY', default='')
+ANTHROPIC_API_KEY = config('ANTHROPIC_API_KEY', default='')
+
+# AI Model Settings
+AI_CONFIG = {
+    'DEFAULT_MODEL': 'gpt-4o-mini',
+    'EMBEDDING_MODEL': 'text-embedding-3-small',
+    'MAX_TOKENS': 4000,
+    'TEMPERATURE': 0.3,
+    'TOP_P': 0.9,
+}
+
+# Celery Configuration for Background AI Tasks
+CELERY_BROKER_URL = config('REDIS_URL', default='redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = config('REDIS_URL', default='redis://localhost:6379/0')
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+
+# OCR Configuration
+OCR_CONFIG = {
+    'TESSERACT_CMD': config('TESSERACT_CMD', default=r'C:\Program Files\Tesseract-OCR\tesseract.exe'),
+    'SUPPORTED_FORMATS': ['pdf', 'png', 'jpg', 'jpeg', 'tiff', 'bmp'],
+    'MAX_FILE_SIZE': 50 * 1024 * 1024,  # 50MB
+}
+
+# Healthcare AI Settings
+HEALTHCARE_AI_CONFIG = {
+    'RISK_THRESHOLD': 0.7,
+    'CONFIDENCE_THRESHOLD': 0.8,
+    'MAX_INSIGHTS_PER_PATIENT': 10,
+    'ENABLE_MEDICAL_NER': True,
+    'ENABLE_DRUG_INTERACTION_CHECK': True,
+}
+
+# Logging Configuration for AI Services
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs' / 'ai_insights.log',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'ai_insights': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}

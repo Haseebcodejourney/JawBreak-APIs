@@ -1,1 +1,1 @@
-web: cd APIs && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn APIs.wsgi:application
+web: gunicorn APIs.wsgi:application

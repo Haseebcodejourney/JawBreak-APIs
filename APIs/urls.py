@@ -80,6 +80,7 @@ urlpatterns = [
     path('api/v1/oasis/', include('oasis.urls')),
     path('api/v1/files/', include('files.urls')),
     path('api/v1/communication/', include('communication.urls')),
+    path('api/v1/ai/', include('ai_insights.urls')),
     
     # Health check endpoint
     path('health/', lambda request: JsonResponse({

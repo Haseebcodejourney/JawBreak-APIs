@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'oasis',
     'communication',
     'api',  # your original app
+    'ai_insights',  # AI insights app
 ]
 
 MIDDLEWARE = [
@@ -180,4 +181,16 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ]
+}
+
+# AI Configuration
+OPENAI_API_KEY = 'your-openai-api-key-here'
+ANTHROPIC_API_KEY = 'your-anthropic-api-key-here'
+
+# AI Model Configuration
+AI_CONFIG = {
+    'DEFAULT_MODEL': 'gpt-4',
+    'MAX_TOKENS': 4000,
+    'TEMPERATURE': 0.7,
+    'BACKUP_MODEL': 'claude-3-sonnet-20240229'
 }
